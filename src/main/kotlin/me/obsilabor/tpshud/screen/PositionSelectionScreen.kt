@@ -14,7 +14,7 @@ class PositionSelectionScreen(private val parent: Screen? = null) : Screen(Text.
     private var selectedRelY = 0
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, tickDelta: Float) {
-        renderBackground(context, mouseX, mouseY, tickDelta)
+        renderDarkening(context)
         val x = ConfigManager.config?.x ?: 0
         val y = ConfigManager.config?.y ?: 0
 
@@ -23,7 +23,6 @@ class PositionSelectionScreen(private val parent: Screen? = null) : Screen(Text.
         context.matrices.scale(ConfigManager.config?.scale ?: 1.0F, ConfigManager.config?.scale ?: 1.0F, 0.0F)
         drawRect(context, x - 1, y - 1, x + TpsWidget.width, y + textRenderer.fontHeight, -1)
         context.matrices.pop()
-        super.render(context, mouseX, mouseY, tickDelta)
     }
 
     override fun mouseMoved(mouseX: Double, mouseY: Double) {
