@@ -17,7 +17,6 @@ public abstract class InGameHudMixin {
     @Inject(method = "renderMiscOverlays", at = @At("HEAD"))
     private void renderTpsHud(DrawContext drawContext, RenderTickCounter renderTickCounter, CallbackInfo ci) {
         if(!(MinecraftClient.getInstance().currentScreen instanceof PositionSelectionScreen)) {
-            //MatrixStack matrixStack = new MatrixStack();
             drawContext.getMatrices().push();
             TpsWidget.INSTANCE.render(drawContext);
             drawContext.getMatrices().pop();

@@ -36,7 +36,7 @@ data class TpsHudConfig(
             true,
             false,
             true,
-            "TPS:"
+            "TPS: "
         )
     }
 }
