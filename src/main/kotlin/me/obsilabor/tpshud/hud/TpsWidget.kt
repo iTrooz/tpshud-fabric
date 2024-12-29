@@ -6,10 +6,13 @@ import com.mojang.blaze3d.systems.RenderSystem
 import me.obsilabor.tpshud.TpsTracker
 import me.obsilabor.tpshud.config.ConfigManager
 import me.obsilabor.tpshud.minecraft
+import net.minecraft.client.gl.ShaderProgramKeys
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.render.*
 import org.joml.Matrix4f
 import java.awt.Color
+import java.math.BigDecimal
+import java.math.RoundingMode
 import kotlin.math.roundToInt
 
 object TpsWidget {
@@ -26,7 +29,7 @@ object TpsWidget {
         val text = ConfigManager.config?.text ?: "TPS: "
         val widthPartOne = minecraft.textRenderer.getWidth(text)
         context.drawText(minecraft.textRenderer, text, config.x, config.y, config.textColor, config.textShadow)
-        context.drawText(minecraft.textRenderer, removeDot(TpsTracker.INSTANCE.tickRate), config.x+widthPartOne, config.y, config.valueTextColor, config.textShadow)
+        context.drawText(minecraft.textRenderer, round(TpsTracker.INSTANCE.tickRate), config.x+widthPartOne, config.y, config.valueTextColor, config.textShadow)
         context.matrices.pop()
     }
 
@@ -43,24 +46,22 @@ object TpsWidget {
         val text = ConfigManager.config?.text ?: "TPS: "
         val widthPartOne = minecraft.textRenderer.getWidth(text)
         context.drawText(minecraft.textRenderer, text, x, y, config.textColor, config.textShadow)
-        context.drawText(minecraft.textRenderer, removeDot(19.89f), x+widthPartOne, y, config.valueTextColor, config.textShadow)
+        context.drawText(minecraft.textRenderer, round(19.89f), x+widthPartOne, y, config.valueTextColor, config.textShadow)
         context.matrices.pop()
     }
 
-    private fun removeDot(tps: Float): String {
+    private fun round(tps: Float): String {
         var copy = tps
-        if(copy >= 19.79 && ConfigManager.config?.satisfyTpsCount == true) { // show 20 to satisfy the user
-            copy = 20.0f
-        }
-        return if(tps.toString().contains(".")) {
-            copy.toString().split(".")[0]
+        copy = if(ConfigManager.config?.satisfyTpsCount == true) {
+            Math.round(copy).toFloat()
         } else {
-            copy.toString()
+            BigDecimal(copy.toString()).setScale(2, RoundingMode.HALF_UP).toFloat() // Limit characters
         }
+        return copy.toString()
     }
 
     val width: Int
-        get() = minecraft.textRenderer.getWidth(ConfigManager.config?.text ?: "TPS: ")+minecraft.textRenderer.getWidth(removeDot(TpsTracker.INSTANCE.tickRate))
+        get() = minecraft.textRenderer.getWidth(ConfigManager.config?.text ?: "TPS: ")+minecraft.textRenderer.getWidth(round(TpsTracker.INSTANCE.tickRate))
 
     private fun fillBackground(drawContext: DrawContext, x1: Float, y1: Float, x2: Float, y2: Float, color: Int, alpha: Float) {
         // Doesn't work / only works without alpha / looks ugly - Due to removal of RenderSystem.disableTexture
@@ -74,7 +75,7 @@ object TpsWidget {
         val g = (color shr 8 and 255).toFloat() / 255.0f
         val b = (color and 255).toFloat() / 255.0f
         val var10000 = Tessellator.getInstance()
-        RenderSystem.setShader { GameRenderer.getPositionTexProgram() }
+        RenderSystem.setShader(ShaderProgramKeys.POSITION_TEX)
         RenderSystem.enableBlend()
         //RenderSystem.disableTexture()
         RenderSystem.defaultBlendFunc()
