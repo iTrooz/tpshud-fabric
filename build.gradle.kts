@@ -3,16 +3,16 @@ import com.matthewprenger.cursegradle.CurseRelation
 import com.matthewprenger.cursegradle.Options
 
 plugins {
-    kotlin("jvm") version "2.1.0"
-    kotlin("plugin.serialization") version "2.1.0"
-    id("fabric-loom") version "1.9-SNAPSHOT"
+    kotlin("jvm") version "2.1.20"
+    kotlin("plugin.serialization") version "2.1.20"
+    id("fabric-loom") version "1.10-SNAPSHOT"
     id("com.modrinth.minotaur") version "2.+"
     id("com.matthewprenger.cursegradle") version "1.4.0"
     id("java")
 }
 
 group = "me.obsilabor"
-version = "1.7.4+1.21.4"
+version = "1.7.5+1.21.5"
 
 repositories {
     mavenCentral()
@@ -31,15 +31,15 @@ dependencies {
     // paper
     compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
     // fabric
-    minecraft("com.mojang:minecraft:1.21.4")
-    mappings("net.fabricmc:yarn:1.21.4+build.4")
-    modImplementation("net.fabricmc:fabric-loader:0.16.9")
-    modImplementation("net.fabricmc.fabric-api:fabric-api:0.113.0+1.21.4")
-    modImplementation("net.fabricmc:fabric-language-kotlin:1.13.0+kotlin.2.1.0")
+    minecraft("com.mojang:minecraft:1.21.5")
+    mappings("net.fabricmc:yarn:1.21.5+build.1")
+    modImplementation("net.fabricmc:fabric-loader:0.16.10")
+    modImplementation("net.fabricmc.fabric-api:fabric-api:0.119.6+1.21.5")
+    modImplementation("net.fabricmc:fabric-language-kotlin:1.13.2+kotlin.2.1.20")
     // modmenu
-    modApi("maven.modrinth:modmenu:12.0.0")
+    modApi("maven.modrinth:modmenu:14.0.0-rc.2")
     // yacl
-    modApi("dev.isxander:yet-another-config-lib:3.6.2+1.21.4-fabric")
+    modApi("dev.isxander:yet-another-config-lib:3.6.6+1.21.5-fabric")
 }
 
 tasks {
@@ -81,7 +81,7 @@ modrinth {
     projectId.set("tps-hud")
     versionNumber.set(project.version.toString())
     versionType.set("release")
-    gameVersions.addAll(listOf("1.21.4"))
+    gameVersions.addAll(listOf("1.21.5"))
     loaders.add("fabric")
     loaders.add("quilt")
     loaders.add("purpur")
@@ -104,7 +104,7 @@ curseforge {
 
         id = "610618"
         releaseType = "release"
-        addGameVersion("1.21.4")
+        addGameVersion("1.21.5")
         addGameVersion("Fabric")
         addGameVersion("Quilt")
 
