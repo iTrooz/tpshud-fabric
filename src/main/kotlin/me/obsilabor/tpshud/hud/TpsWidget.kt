@@ -52,7 +52,7 @@ object TpsWidget {
         copy = if(ConfigManager.config?.satisfyTpsCount == true) {
             Math.round(copy).toFloat()
         } else {
-            BigDecimal(copy.toString()).setScale(2, RoundingMode.HALF_UP).toFloat() // Limit characters
+            BigDecimal(copy.toDouble()).setScale(2, RoundingMode.HALF_UP).toFloat() // Limit characters
         }
         return copy.toString()
     }
