@@ -18,7 +18,8 @@ class TpsHudFabricServer : DedicatedServerModInitializer {
             Timer().scheduleAtFixedRate(object : TimerTask() {
                 override fun run() {
                     for (player in it.playerManager.playerList) {
-                        ServerPlayNetworking.send(player, CommonTickRatePayload(it.tickManager.tickRate.toDouble()))
+                        val tps = (1000 / it.averageTickTime).coerceAtMost(20f)
+                        ServerPlayNetworking.send(player, CommonTickRatePayload(tps.toDouble()))
                     }
                 }
             }, 0, 20)
